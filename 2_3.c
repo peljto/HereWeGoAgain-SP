@@ -1,17 +1,3 @@
-//2
-//strukt osoba - ime prezime godina rod +
-//dinamicki dodaje novi element na pocetak liste +
-//ispis liste +
-//dinamicki dodaje novi element na kraj liste +
-//pronalazak po prezimenu +
-//brise odredeni element - napravljeno bez dodatne funkcije, sa setanjem dva pokazivaca po listi +
-//3
-//dinamicki dodaje novi element iza odredenog
-//dinamicki dodaje novi element ispred odredenog - dodatna funkcija koja ce nam naci prethodnog od trazenog i izmedu njih staviti novi element
-//sortira listu po prezimenima - addSort
-//upisuje listu u datoteku - addList
-//cita listu iz datoteke - readList
-
 #define _CRT_SECURE_NO_WARNINGS
 #define M 100
 
@@ -29,121 +15,54 @@ typedef struct _osoba {
 	poz next;
 }osoba;
 
-poz stvoriOsobu(char*, char*, int);
-int unosPocetak(poz, poz);
+int unosPocetak(poz);
 int ispis(poz);
-int unosKraj(poz, poz);
+int unosKraj(poz);
 poz trazi(poz, char*);
 int brisi(poz, char*);
-//int unosIza(poz);
-//poz traziPrethodnog(poz);
-//int unosIspred(poz);
+poz traziPrethodnog(poz, char*);
+int unosIza(poz);
+int unosIspred(poz);
+int addSort(poz, poz);
+int readFile(poz, char);
+int writeFile(poz, char);
 
 
 int main()
 {
-	poz p = NULL;
-	poz n = NULL;
-	osoba head;
-	head.next = NULL;
-	int izbor = 0;
-	char ime[M], prezime[M], prezimePronalazak[M];
-	int god;
-
-	while (1) {
-		printf("\nIZBORNIK:"
-			"\n\t1-Dodaj osobu na pocetak liste\n"
-			"\t2-Ispis liste\n"
-			"\t3-Dodaj osobu na kraj liste\n"
-			"\t4-Pronalazak osobe po prezimenu\n"
-			"\t5-Brisi osobu iz liste po prezimenu\n"
-			"\t0-Izlaz iz programa\n");
-
-		printf("\nVAS IZBOR - ");
-		scanf("%d", &izbor);
-
-		switch (izbor) {
-		case 1:
-			printf("Unesite ime osobe:\t");
-			scanf(" %s", ime);
-
-			printf("\nUnesite prezime osobe:\t");
-			scanf(" %s", prezime);
-
-			printf("\nUnesite godinu rodenja osobe:\t");
-			scanf("%d", &god);
-
-			printf("\n");
-
-			p = stvoriOsobu(ime, prezime, god);
-			unosPocetak(&head, p);
-			ispis(&head);
-			
-			break;
-		case 2:
-			ispis(&head);
-
-			break;
-		case 3:
-			printf("Unesite ime osobe:\t");
-			scanf(" %s", ime);
-
-			printf("\nUnesite prezime osobe:\t");
-			scanf(" %s", prezime);
-
-			printf("\nUnesite godinu rodenja osobe:\t");
-			scanf("%d", &god);
-
-			printf("\n");
-
-			p = stvoriOsobu(ime, prezime, god);
-			unosKraj(&head, p);
-			ispis(&head);
-
-			break;
-		case 4:
-			printf("Unesite prezime osobe koju zelite pronaci:\t");
-			scanf(" %s", prezimePronalazak);
-
-			p = trazi(&head, prezimePronalazak);
-
-			printf("\n%s %s %d\n", p->ime, p->prezime, p->godina);
-
-			break;
-		case 5:
-			printf("Unesite prezime osobe koju zelite izbrisati:\t");
-			scanf(" %s", prezimePronalazak);
-
-			brisi(&head, prezimePronalazak);
-			ispis(&head);
-
-			break;
-		case 0:
-			printf("Izlaz iz programa!\n");
-			return -1;
-			break;
-		}
-
-	}
-
 	return 0;
 }
 
-poz stvoriOsobu(char* ime, char* prezime, int god) {
+poz stvoriOsobu() {
 	poz temp = (poz)malloc(sizeof(osoba));
 
-	strcpy(temp->ime, ime);
-	strcpy(temp->prezime, prezime);
-	temp->godina = god;
-	
-	temp->next = NULL;
-
-	return temp;
+	if (temp == NULL)
+		return -1;
+	else {
+		temp->next = NULL;
+		return temp;
+	}
 }
 
-int unosPocetak(poz head, poz temp) {
-	temp->next = head->next;
-	head->next = temp;
+int unosPocetak(poz temp) {
+	
+	poz q = NULL;
+	q = (poz)malloc(sizeof(osoba));
+
+	if (q == NULL)
+		return -1;
+
+	printf("Unesite ime osobe:\t");
+	scanf(" %s", q->ime);
+
+	printf("\nUnesite prezime osobe:\t");
+	scanf(" %s", q->prezime);
+
+	printf("\nUnesite godinu rodenja osobe:\t");
+	scanf("%d", &q->godina);
+
+	q->next = temp->next;
+	temp->next = q;
 
 	return 0;
 }
@@ -159,22 +78,27 @@ int ispis(poz head) {
 	return 0;
 }
 
-int unosKraj(poz temp, poz p) {
+int unosKraj(poz temp) {
 	while (temp->next != NULL) { //temp next jer saljemo head
 		temp = temp->next;
 	}
-	unosPocetak(temp, p);
+	unosPocetak(temp);
 
 	return 0;
 }
 
-poz trazi(poz temp, char* prezime) {
+poz trazi(poz temp) {
+	char prezime[M];
+
+	printf("Unesite prezime osobe koju zelite pronaci:\t");
+	scanf(" %s", prezime);
+
 	while (temp->next != NULL && strcmp(temp->prezime, prezime))
 		temp = temp->next;
-	
-	/*if (temp == NULL)
-		printf("\nNema trazene osobe u listi!");
-	*/
+
+	if (temp == NULL)
+		return temp;
+
 	return temp;
 }
 
@@ -193,3 +117,105 @@ int brisi(poz head, char* prezime) { //nisam sigurna jel se trazi da se brise sa
 	}
 	return 0;
 }
+
+poz traziPrethodnog(poz temp, char* prezime) {
+	poz prev = temp;
+	temp = temp->next;
+
+	while (temp->next != NULL && strcmp(temp->prezime, prezime)) {
+		prev = temp;
+		temp = temp->next;
+	}
+
+	if (temp->next == NULL) {
+		printf("Trazena osoba ne postoji!\n");
+		return NULL;
+	}
+
+	return prev;
+}
+
+int unosIza(poz temp) {
+	temp = trazi(temp);
+
+	if (temp == NULL)
+		return -1;
+
+	unosPocetak(temp);
+
+	return 0;
+}
+int unosIspred(poz temp) {
+	temp = traziPrethodnog(temp);
+
+	if (temp == NULL)
+		return -1;
+
+	unosPocetak(temp);
+
+	return 0;
+}
+int addSort(poz head, poz current) {
+	if (head->next == NULL) {
+		current->next = head->next;
+		head->next = current;
+		return 0;
+	}
+
+	poz temp = head->next;
+	poz prev = head;
+
+	while (temp != NULL) {
+		if (strcmp(temp->prezime, current->prezime) < 0) {
+			prev = temp;
+			temp = temp->next;
+		}
+		else {
+			current->next = prev->next;
+			prev->next = current;
+			return 0;
+		}
+	}
+	current->next = prev->next;
+	prev->next = current;
+
+	return 0;
+}
+
+int readFile(poz temp, char filename) {
+	FILE* fp;
+
+	fp = fopen(filename, "r");
+
+	if (fp == NULL)
+		return -1;
+
+	char* string = (char*)malloc(M * sizeof(char));
+	poz temp = NULL;
+	while (!feof(fp)) {
+		fgets(string, M, fp);
+		temp = stvoriOsobu();
+	}
+
+	fclose(fp);
+
+	return 0;
+}
+int writeFile(poz temp, char filename) {
+	FILE* fp;
+
+	fp = fopen(filename, "w");
+
+	if (fp == NULL)
+		return -1;
+
+	while (temp->next != NULL) {
+		fprintf(fp, " %s %s %d\n", temp->ime, temp->prezime, temp->godina);
+		temp = temp->next;
+	}
+
+	fclose(fp);
+
+	return 0;
+}
+

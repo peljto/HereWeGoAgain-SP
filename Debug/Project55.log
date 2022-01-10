@@ -1,0 +1,4 @@
+﻿  9.c
+C:\Users\miape\Desktop\SP21\Project55\Project55\9.c(40,18): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\miape\Desktop\SP21\Project55\Project55\9.c(162,14): warning C4133: 'return': incompatible types - from 'poz' to 'pos'
+  Project55.vcxproj -> C:\Users\miape\Desktop\SP21\Project55\Debug\Project55.exe

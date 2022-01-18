@@ -1,0 +1,5 @@
+Szeged 196000
+Budapest 3300000
+Pecs 178000
+Debrecen 216000
+Miskolc 264650

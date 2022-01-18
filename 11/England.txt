@@ -1,0 +1,5 @@
+London 9304016
+Leeds 1889095
+Birmingham 2607437
+Glasgow 1673332
+Manchester 2730076

@@ -1,0 +1,5 @@
+Naples 960000
+Rome 2600000
+Palermo 650000
+Milan 1250000
+Turin 872000
